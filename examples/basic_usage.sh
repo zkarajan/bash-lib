@@ -2,45 +2,38 @@
 # Basic Usage Example for Bash Library
 # This script demonstrates how to use the core modules
 
-# Source the bash library
-source "$(dirname "$0")/../bash-lib.sh"
+# Load bash library
+source <(curl -fsSL https://raw.githubusercontent.com/mrvi0/bash-lib/main/bash-lib-standalone.sh)
 
-# Set log level to debug for this example
-logging::set_level debug
+print_header "Bash Library Basic Usage Example"
 
-echo "=== Bash Library Basic Usage Example ==="
-echo
+# Show library version
+colors::info "Library version: $(bash_lib::version)"
 
-# Show library information
-echo "Library Info:"
-bash_lib::info
-echo
-
-# List available modules
-echo "Available Modules:"
-bash_lib::list_modules
-echo
+print_separator
 
 # Colors example
-echo "=== Colors Example ==="
+colors::info "=== Colors Example ==="
 colors::success "This is a success message"
 colors::error "This is an error message"
 colors::warning "This is a warning message"
 colors::info "This is an info message"
 colors::debug "This is a debug message"
 colors::highlight "This is highlighted text"
-echo
+
+print_separator
 
 # Logging example
-echo "=== Logging Example ==="
+colors::info "=== Logging Example ==="
 logging::info "Starting the example script"
 logging::debug "Debug information: script is running"
 logging::warn "Warning: this is just an example"
 logging::error "Error: this is a simulated error"
-echo
+
+print_separator
 
 # Validation example
-echo "=== Validation Example ==="
+colors::info "=== Validation Example ==="
 
 # Email validation
 email="user@example.com"
@@ -82,18 +75,20 @@ else
     colors::error "✗ File does not exist: $script_file"
 fi
 
-echo
+print_separator
 
 # Progress bar example
-echo "=== Progress Bar Example ==="
+colors::info "=== Progress Bar Example ==="
 for i in {1..10}; do
     colors::progress_bar "$i" "10" "30" "Processing"
     sleep 0.1
 done
 echo
 
+print_separator
+
 # Combined example
-echo "=== Combined Example ==="
+colors::info "=== Combined Example ==="
 logging::info "Processing user input"
 
 # Simulate user input
@@ -117,6 +112,7 @@ else
     colors::warning "Email is from an uncommon domain"
 fi
 
-echo
+print_separator
+
 logging::info "Example completed successfully"
 colors::success "All examples completed!" 

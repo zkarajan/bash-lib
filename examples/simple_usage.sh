@@ -1,77 +1,76 @@
 #!/usr/bin/env bash
-# Простой пример использования bash-lib
-# Подключение библиотеки одной строкой
+# Simple bash-lib usage example
+# One-line library connection
 
-# Подключить всю библиотеку
+# Load the entire library
 source <(curl -fsSL https://raw.githubusercontent.com/mrvi0/bash-lib/main/bash-lib-standalone.sh)
 
-echo "=== Простой пример bash-lib ==="
-echo
+print_header "Simple bash-lib Example"
 
-# Показать заголовок
-print_header "Мой скрипт"
+# Show header
+print_header "My Script"
 
-# Логирование
-logging::info "Скрипт запущен"
-logging::debug "Отладочная информация"
+# Logging
+logging::info "Script started"
+logging::debug "Debug information"
 
-# Цветной вывод
-colors::success "Успешная операция!"
-colors::warning "Предупреждение"
-colors::info "Информационное сообщение"
+# Colored output
+colors::success "Operation successful!"
+colors::warning "Warning message"
+colors::info "Information message"
 
-# Валидация
+# Validation
 email="test@example.com"
 if validation::is_email "$email"; then
-    colors::success "✓ Email валиден: $email"
+    colors::success "✓ Email is valid: $email"
 else
-    colors::error "✗ Неверный email: $email"
+    colors::error "✗ Invalid email: $email"
 fi
 
-# Проверка аргументов
+# Check arguments
 if [[ $# -eq 0 ]]; then
-    colors::error "Необходимо указать имя файла"
+    colors::error "Filename required"
     exit 1
 fi
 
 filename="$1"
 
-# Проверка файла
+# Check file
 if validation::file_exists "$filename"; then
-    colors::success "✓ Файл существует: $filename"
+    colors::success "✓ File exists: $filename"
     size=$(get_file_size "$filename")
-    colors::info "Размер файла: $size"
+    colors::info "File size: $size"
 else
-    colors::warning "✗ Файл не найден: $filename"
+    colors::warning "✗ File not found: $filename"
 fi
 
-# Подтверждение действия
-if confirm "Продолжить выполнение?"; then
-    colors::success "Пользователь подтвердил действие"
+# Confirm action
+if confirm "Continue execution?"; then
+    colors::success "User confirmed action"
 else
-    colors::info "Пользователь отменил действие"
+    colors::info "User cancelled action"
 fi
 
-# Прогресс-бар
-echo "Обработка..."
+# Progress bar
+echo "Processing..."
 for i in {1..5}; do
-    colors::progress_bar "$i" "5" "30" "Обработка"
+    colors::progress_bar "$i" "5" "30" "Processing"
     sleep 0.5
 done
 
-# Системная информация
-if confirm "Показать информацию о системе?" "n"; then
+# System information
+if confirm "Show system information?" "n"; then
     get_system_info
 fi
 
-# Проверка интернета
+# Internet check
 if check_internet; then
-    colors::success "Интернет доступен"
+    colors::success "Internet is available"
     ip=$(get_external_ip)
-    colors::info "Внешний IP: $ip"
+    colors::info "External IP: $ip"
 else
-    colors::warning "Интернет недоступен"
+    colors::warning "Internet is unavailable"
 fi
 
-print_header "Скрипт завершен"
-colors::success "Все операции выполнены успешно!" 
+print_header "Script completed"
+colors::success "All operations completed successfully!" 

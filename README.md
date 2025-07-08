@@ -10,7 +10,6 @@ A reusable bash functions and utilities library for development, deployment, and
 ## 📋 Table of Contents
 
 - [🚀 Quick Start](#-quick-start)
-- [🤖 AI Assistant Prompts](#-ai-assistant-prompts)
 - [📦 Versioning](#-versioning)
 - [📁 Project Structure](#-project-structure)
 - [🎯 Core Modules](#-core-modules)
@@ -125,38 +124,6 @@ if validation::is_email "user@example.com"; then
     echo "Valid email"
 fi
 ```
-
-[⬆️ Back to top](#bash-library)
-
-## 🤖 AI Assistant Prompts
-
-When asking AI assistants (like ChatGPT, Claude, etc.) to create bash scripts, you can use these prompts:
-
-### Quick Prompt
-```
-Use my bash library to create a script:
-
-Library: https://github.com/mrvi0/bash-lib
-Connection: source <(curl -fsSL https://raw.githubusercontent.com/mrvi0/bash-lib/main/bash-lib-standalone.sh)
-
-Available functions:
-- colors::success/error/warning/info/debug
-- logging::info/error/debug/warn/fatal  
-- validation::is_email/is_integer/file_exists/is_port
-- confirm "question" - for confirmations
-- print_header "title" - for headers
-- get_system_info - system information
-- check_internet - internet check
-
-Add colored output, logging, validation, and error handling.
-```
-
-### Detailed Prompts
-See `prompts/ai_usage_prompt.md` for comprehensive prompts including:
-- Detailed usage instructions
-- Task-specific prompts
-- Debugging prompts
-- Improvement prompts
 
 [⬆️ Back to top](#bash-library)
 

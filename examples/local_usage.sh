@@ -1,25 +1,25 @@
 #!/usr/bin/env bash
-# Пример с проверкой локального файла
+# Example with local file check
 
-# Функция для загрузки библиотеки с приоритетом локального файла
+# Function to load library with local file priority
 load_bash_lib() {
     local local_file="./bash-lib-standalone.sh"
     local remote_url="https://raw.githubusercontent.com/mrvi0/bash-lib/main/bash-lib-standalone.sh"
     
-    # Сначала попробовать локальный файл
+    # First try local file
     if [[ -f "$local_file" ]]; then
-        echo "Загружаем локальную версию библиотеки..."
+        echo "Loading local version of library..."
         source "$local_file"
     else
-        echo "Локальный файл не найден, загружаем с GitHub..."
+        echo "Local file not found, loading from GitHub..."
         source <(curl -fsSL "$remote_url")
     fi
 }
 
-# Загрузить библиотеку
+# Load library
 load_bash_lib
 
-# Теперь можно использовать все функции
-print_header "Скрипт с локальным файлом"
-logging::info "Библиотека загружена"
-colors::success "Готово к работе!" 
+# Now you can use all functions
+print_header "Script with local file"
+logging::info "Library loaded"
+colors::success "Ready to work!" 

@@ -1,49 +1,49 @@
 #!/usr/bin/env bash
-# Универсальный способ загрузки библиотеки
+# Universal library loading method
 
-# Функция для универсальной загрузки bash-lib
+# Function for universal bash-lib loading
 load_bash_lib() {
     local remote_url="https://raw.githubusercontent.com/mrvi0/bash-lib/main/bash-lib-standalone.sh"
     local cache_dir="$HOME/.cache/bash-lib"
     local cache_file="$cache_dir/bash-lib-standalone.sh"
     local local_file="./bash-lib-standalone.sh"
     
-    # Проверить, не загружена ли уже библиотека
+    # Check if library is already loaded
     if [[ -n "$__BASH_LIB_IMPORTED" ]]; then
         return 0
     fi
     
-    # Способ 1: Локальный файл в текущей директории
+    # Method 1: Local file in current directory
     if [[ -f "$local_file" ]]; then
-        echo "Загружаем локальную версию библиотеки..."
+        echo "Loading local version of library..."
         source "$local_file"
         return 0
     fi
     
-    # Способ 2: Кэшированная версия (если не устарела)
+    # Method 2: Cached version (if not outdated)
     if [[ -f "$cache_file" ]] && [[ $(($(date +%s) - $(stat -c %Y "$cache_file"))) -lt 86400 ]]; then
-        echo "Загружаем библиотеку из кэша..."
+        echo "Loading library from cache..."
         source "$cache_file"
         return 0
     fi
     
-    # Способ 3: Скачать и кэшировать
-    echo "Загружаем библиотеку с GitHub..."
+    # Method 3: Download and cache
+    echo "Loading library from GitHub..."
     mkdir -p "$cache_dir"
     if curl -fsSL "$remote_url" -o "$cache_file"; then
         source "$cache_file"
         return 0
     fi
     
-    # Способ 4: Прямая загрузка без кэширования
-    echo "Прямая загрузка библиотеки..."
+    # Method 4: Direct loading without caching
+    echo "Direct library loading..."
     source <(curl -fsSL "$remote_url")
 }
 
-# Загрузить библиотеку
+# Load library
 load_bash_lib
 
-# Теперь можно использовать все функции
-print_header "Универсальный скрипт"
-logging::info "Библиотека загружена универсальным способом"
-colors::success "Готово к работе!" 
+# Now you can use all functions
+print_header "Universal Script"
+logging::info "Library loaded using universal method"
+colors::success "Ready to work!" 
