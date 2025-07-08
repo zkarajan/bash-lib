@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 # Bash Library - Standalone Version
+__BASH_LIB_VERSION="1.0.0"
+
+bash_lib::version() {
+    echo "$__BASH_LIB_VERSION"
+}
 # Все функции в одном файле для простого подключения
 # Использование: source <(curl -fsSL https://raw.githubusercontent.com/mrvi0/bash-lib/main/bash-lib-standalone.sh)
 
