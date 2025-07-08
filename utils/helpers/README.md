@@ -25,7 +25,7 @@ log_success "Успешно!"
 
 # Автоматически загружаем утилиты
 if [[ -z "$__BASH_UTILS_IMPORTED" ]]; then
-    source <(curl -fsSL https://raw.githubusercontent.com/yourname/bash-lib/main/utils/helpers/colors.sh)
+    source <(curl -fsSL https://raw.githubusercontent.com/mrvi0/bash-lib/main/utils/helpers/colors.sh)
 fi
 
 log_info "Скрипт начался"
