@@ -7,11 +7,16 @@
 # Автоматически загружаем утилиты
 if [[ -z "$__BASH_UTILS_IMPORTED" ]]; then
     # Локальный импорт (если скрипт в том же репозитории)
-    if [[ -f "$(dirname "$0")/../../utils/helpers/colors.sh" ]]; then
-        source "$(dirname "$0")/../../utils/helpers/colors.sh"
+    if [[ -f "$(dirname "$0")/../../utils/helpers/base.sh" ]]; then
+        source "$(dirname "$0")/../../utils/helpers/base.sh"
     else
-        # Удаленный импорт (когда репозиторий будет опубликован)
-        source <(curl -fsSL https://raw.githubusercontent.com/yourname/bash-lib/main/utils/helpers/colors.sh)
+        # Удаленный импорт (github main)
+        if curl -fsSL https://raw.githubusercontent.com/mrvi0/bash-lib/main/utils/helpers/base.sh -o /tmp/base.sh; then
+            source /tmp/base.sh
+        else
+            # Fallback на gist
+            curl -fsSL https://gist.githubusercontent.com/mrvi0/4a6b598691b90885c440c876d79f4ef7/raw/a84f4dd5cdde3364043e210e1bad8d50a68a1000/base.sh -o /tmp/base.sh && source /tmp/base.sh
+        fi
     fi
 fi
 
