@@ -2,7 +2,25 @@
 
 Библиотека переиспользуемых bash-функций и утилит для разработки, развертывания и управления системами.
 
-## 🚀 Быстрый старт
+## �� Быстрый старт
+
+### Простое подключение (без установки)
+
+**Самый простой способ** - подключить библиотеку прямо в скрипт одной строкой:
+
+```bash
+#!/usr/bin/env bash
+# Подключить всю библиотеку одной строкой
+source <(curl -fsSL https://raw.githubusercontent.com/mrvi0/bash-lib/main/bash-lib-standalone.sh)
+
+# Теперь можно использовать все функции
+logging::info "Скрипт запущен"
+colors::success "Операция выполнена успешно!"
+
+if validation::is_email "user@example.com"; then
+    echo "Email валиден"
+fi
+```
 
 ### Установка
 
@@ -52,6 +70,7 @@ bash-lib/
 ├── docs/                         # Документация
 ├── scripts/                      # Скрипты установки
 ├── bash-lib.sh                  # Главный файл для импорта
+├── bash-lib-standalone.sh       # Единый файл для простого подключения
 └── README.md
 ```
 
@@ -118,7 +137,7 @@ validation::all "test@example.com" validation::is_email validation::is_not_empty
 ### Базовый пример
 ```bash
 #!/usr/bin/env bash
-source /usr/local/lib/bash-lib/bash-lib.sh
+source <(curl -fsSL https://raw.githubusercontent.com/mrvi0/bash-lib/main/bash-lib-standalone.sh)
 
 # Настройка логирования
 logging::set_level info
@@ -141,11 +160,11 @@ logging::info "Приложение завершено успешно"
 ### Пример с прогресс-баром
 ```bash
 #!/usr/bin/env bash
-source /usr/local/lib/bash-lib/bash-lib.sh
+source <(curl -fsSL https://raw.githubusercontent.com/mrvi0/bash-lib/main/bash-lib-standalone.sh)
 
 echo "Обработка файлов..."
 for i in {1..100}; do
-    colors::progress_bar "$i" "100" "50" "Обработка"
+    colors::progress_bar "$i" "100" "30" "Обработка"
     sleep 0.01
 done
 echo "Готово!"
