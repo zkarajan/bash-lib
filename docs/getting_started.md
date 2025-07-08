@@ -1,202 +1,202 @@
 # Getting Started with Bash Library
 
-## 🚀 Быстрый старт
+## 🚀 Quick Start
 
-### 1. Установка
+### 1. Installation
 
-#### Автоматическая установка (рекомендуется)
+#### Automatic Installation (Recommended)
 ```bash
-# Клонировать репозиторий
+# Clone repository
 git clone https://github.com/mrvi0/bash-lib.git
 cd bash-lib
 
-# Установить библиотеку
+# Install library
 sudo ./scripts/install.sh
 
-# Активировать в текущей сессии
+# Activate in current session
 source ~/.bashrc
 ```
 
-#### Ручная установка
+#### Manual Installation
 ```bash
-# Создать директории
+# Create directories
 sudo mkdir -p /usr/local/lib/bash-lib
 sudo mkdir -p /usr/local/bin
 
-# Скопировать файлы
+# Copy files
 sudo cp -r src /usr/local/lib/bash-lib/
 sudo cp bash-lib.sh /usr/local/lib/bash-lib/
 
-# Создать симлинк
+# Create symlink
 sudo ln -sf /usr/local/lib/bash-lib/bash-lib.sh /usr/local/bin/bash-lib
 
-# Добавить в .bashrc
+# Add to .bashrc
 echo 'source /usr/local/lib/bash-lib/bash-lib.sh' >> ~/.bashrc
 source ~/.bashrc
 ```
 
-### 2. Проверка установки
+### 2. Verify Installation
 
 ```bash
-# Проверить версию
+# Check version
 bash-lib --version
 
-# Показать информацию о библиотеке
+# Show library information
 bash-lib --info
 
-# Запустить примеры
+# Run examples
 ./examples/basic_usage.sh
 
-# Запустить тесты
+# Run tests
 ./tests/unit/test_core.sh
 ```
 
-## 📝 Первый скрипт
+## 📝 Your First Script
 
-Создайте файл `my_script.sh`:
+Create a file `my_script.sh`:
 
 ```bash
 #!/usr/bin/env bash
-# Мой первый скрипт с bash-lib
+# My first script with bash-lib
 
-# Подключить библиотеку
-source /usr/local/lib/bash-lib/bash-lib.sh
+# Load library (standalone version)
+source <(curl -fsSL https://raw.githubusercontent.com/mrvi0/bash-lib/main/bash-lib-standalone.sh)
 
-# Настроить логирование
+# Setup logging
 logging::set_level info
 logging::set_file "/tmp/my_script.log"
 
-# Основная логика
-logging::info "Запуск скрипта"
+# Main logic
+logging::info "Script started"
 
-# Валидация аргументов
+# Validate arguments
 if [[ $# -eq 0 ]]; then
-    colors::error "Необходимо указать email"
-    logging::error "Email не указан"
+    colors::error "Email required"
+    logging::error "Email not provided"
     exit 1
 fi
 
 email="$1"
 
-# Валидация email
+# Validate email
 if ! validation::is_email "$email"; then
-    colors::error "Неверный формат email: $email"
-    logging::error "Валидация email не прошла: $email"
+    colors::error "Invalid email format: $email"
+    logging::error "Email validation failed: $email"
     exit 1
 fi
 
-colors::success "Email валиден: $email"
-logging::info "Обработка email: $email"
+colors::success "Email is valid: $email"
+logging::info "Processing email: $email"
 
-# Имитация обработки
+# Simulate processing
 for i in {1..5}; do
-    colors::progress_bar "$i" "5" "30" "Обработка"
+    colors::progress_bar "$i" "5" "30" "Processing"
     sleep 0.5
 done
 
-colors::success "Скрипт завершен успешно"
-logging::info "Скрипт завершен"
+colors::success "Script completed successfully"
+logging::info "Script completed"
 ```
 
-Сделайте скрипт исполняемым и запустите:
+Make the script executable and run:
 
 ```bash
 chmod +x my_script.sh
 ./my_script.sh user@example.com
 ```
 
-## 🎯 Основные функции
+## 🎯 Core Functions
 
-### Цветной вывод
+### Colored Output
 ```bash
-colors::success "Успешная операция"
-colors::error "Ошибка"
-colors::warning "Предупреждение"
-colors::info "Информация"
-colors::debug "Отладочная информация"
-colors::highlight "Выделенный текст"
+colors::success "Successful operation"
+colors::error "Error"
+colors::warning "Warning"
+colors::info "Information"
+colors::debug "Debug information"
+colors::highlight "Highlighted text"
 ```
 
-### Логирование
+### Logging
 ```bash
-# Установить уровень логирования
+# Set logging level
 logging::set_level debug  # debug, info, warn, error, fatal
 
-# Логирование
-logging::info "Информационное сообщение"
-logging::debug "Отладочная информация"
-logging::warn "Предупреждение"
-logging::error "Ошибка"
-logging::fatal "Критическая ошибка (с выходом)"
+# Logging
+logging::info "Information message"
+logging::debug "Debug information"
+logging::warn "Warning"
+logging::error "Error"
+logging::fatal "Critical error (with exit)"
 
-# Логирование в файл
+# Logging to file
 logging::set_file "/var/log/myapp.log"
 ```
 
-### Валидация
+### Validation
 ```bash
-# Проверка email
+# Email validation
 validation::is_email "user@example.com"
 
-# Проверка чисел
+# Number validation
 validation::is_integer "123"
 validation::is_positive_integer "456"
 validation::is_in_range "50" "1" "100"
 
-# Проверка порта
+# Port validation
 validation::is_port "8080"
 
-# Проверка файлов
+# File validation
 validation::file_exists "/path/to/file"
 validation::is_readable "/path/to/file"
 
-# Комбинированная проверка
+# Combined validation
 validation::all "test@example.com" validation::is_email validation::is_not_empty
 ```
 
-## 🔧 Настройка
+## 🔧 Configuration
 
-### Переменные окружения
+### Environment Variables
 ```bash
-# Уровень логирования
+# Logging level
 export LOG_LEVEL=debug
 
-# Файл логов
+# Log file
 export LOG_FILE="/var/log/myapp.log"
 
-# Формат временной метки
+# Timestamp format
 export LOG_TIMESTAMP_FORMAT="%Y-%m-%d %H:%M:%S"
 ```
 
-### В .bashrc
+### In .bashrc
 ```bash
 # Bash Library Configuration
 export BASH_LIB_DIR="/usr/local/lib/bash-lib"
 source "$BASH_LIB_DIR/bash-lib.sh"
 
-# Настройки по умолчанию
+# Default settings
 export LOG_LEVEL=info
 ```
 
-## 🧪 Тестирование
+## 🧪 Testing
 
-### Запуск тестов
+### Run Tests
 ```bash
-# Все тесты
+# All tests
 ./tests/unit/test_core.sh
 
-# Примеры
+# Examples
 ./examples/basic_usage.sh
 ```
 
-### Создание собственных тестов
+### Create Your Own Tests
 ```bash
 #!/usr/bin/env bash
 # test_my_function.sh
 
 source "$(dirname "$0")/../../bash-lib.sh"
 
-# Тест функции
+# Test function
 test_my_function() {
     local result=$(my_function "test")
     if [[ "$result" == "expected" ]]; then
@@ -208,33 +208,38 @@ test_my_function() {
     fi
 }
 
-# Запуск теста
+# Run test
 test_my_function
 ```
 
-## 📚 Следующие шаги
+## 📚 Next Steps
 
-1. **Изучите примеры** в директории `examples/`
-2. **Прочитайте документацию** в директории `docs/`
-3. **Посмотрите исходный код** в директории `src/`
-4. **Создайте свои модули** по образцу существующих
-5. **Добавьте тесты** для ваших функций
+1. **Study examples** in the `examples/` directory
+2. **Read documentation** in the `docs/` directory
+3. **Look at source code** in the `src/` directory
+4. **Create your own modules** following existing patterns
+5. **Add tests** for your functions
 
-## 🆘 Получение помощи
+## 🆘 Getting Help
 
-- **Документация**: `docs/`
-- **Примеры**: `examples/`
-- **Исходный код**: `src/`
-- **Тесты**: `tests/`
+- **Documentation**: `docs/`
+- **Examples**: `examples/`
+- **Source Code**: `src/`
+- **Tests**: `tests/`
 - **Issues**: [GitHub Issues](https://github.com/mrvi0/bash-lib/issues)
 
-## 🔄 Обновление
+## 🔄 Updating
 
 ```bash
-# Обновить библиотеку
+# Update library
 cd bash-lib
 git pull origin main
 
-# Переустановить
+# Reinstall
 sudo ./scripts/install.sh
-``` 
+```
+
+## 🌍 Language Support
+
+- 🇺🇸 [English](../README.md)
+- 🇷🇺 [Русский](ru/README.md) 

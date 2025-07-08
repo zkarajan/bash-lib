@@ -696,4 +696,47 @@ dir_exists() { validation::dir_exists "$1"; }
 export __BASH_LIB_IMPORTED=1
 
 # Логируем загрузку библиотеки
-logging::debug "Bash Library Standalone загружена" 
+logging::debug "Bash Library Standalone загружена"
+
+# CLI интерфейс (если скрипт запущен напрямую)
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    case "${1:-}" in
+        --version|-v)
+            echo "bash-lib version $__BASH_LIB_VERSION"
+            exit 0
+            ;;
+        --info|-i)
+            echo "Bash Library v$__BASH_LIB_VERSION"
+            echo "Standalone version with all core functions"
+            echo "Available modules: colors, logging, validation, system utilities"
+            echo "Usage: source <(curl -fsSL https://raw.githubusercontent.com/mrvi0/bash-lib/main/bash-lib-standalone.sh)"
+            exit 0
+            ;;
+        --help|-h)
+            echo "Bash Library - Standalone Version"
+            echo
+            echo "Usage:"
+            echo "  source <(curl -fsSL https://raw.githubusercontent.com/mrvi0/bash-lib/main/bash-lib-standalone.sh)"
+            echo
+            echo "Options:"
+            echo "  --version, -v    Show version"
+            echo "  --info, -i       Show library information"
+            echo "  --help, -h       Show this help"
+            echo
+            echo "Examples:"
+            echo "  # Load library"
+            echo "  source <(curl -fsSL https://raw.githubusercontent.com/mrvi0/bash-lib/main/bash-lib-standalone.sh)"
+            echo
+            echo "  # Use functions"
+            echo "  colors::success 'Hello World'"
+            echo "  logging::info 'Script started'"
+            echo "  validation::is_email 'user@example.com'"
+            exit 0
+            ;;
+        *)
+            echo "Bash Library - Standalone Version"
+            echo "Use --help for usage information"
+            exit 0
+            ;;
+    esac
+fi 

@@ -1,233 +1,335 @@
 # Bash Library
 
-Библиотека переиспользуемых bash-функций и утилит для разработки, развертывания и управления системами.
+A reusable bash functions and utilities library for development, deployment, and system management.
 
-## 🚀 Быстрый старт
+## 🌍 Language Selection
 
-### Простое подключение (без установки)
+- 🇺🇸 [English](README.md) (current)
+- 🇷🇺 [Русский](docs/ru/README.md)
 
-**Самый простой способ** - подключить библиотеку прямо в скрипт одной строкой:
+## 📋 Table of Contents
+
+- [🚀 Quick Start](#-quick-start)
+- [🤖 AI Assistant Prompts](#-ai-assistant-prompts)
+- [📦 Versioning](#-versioning)
+- [📁 Project Structure](#-project-structure)
+- [🎯 Core Modules](#-core-modules)
+- [📚 Usage Examples](#-usage-examples)
+- [🔧 Installation Methods](#-installation-methods)
+- [🎯 Recommendations](#-recommendations)
+- [🔧 Installation and Setup](#-installation-and-setup)
+- [🧪 Testing](#-testing)
+- [📖 Documentation](#-documentation)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
+- [🆘 Support](#-support)
+- [🔄 Versions](#-versions)
+
+[⬆️ Back to top](#bash-library)
+
+## 🚀 Quick Start
+
+### Simple Connection (No Installation)
+
+**The easiest way** - connect the library directly in your script with one line:
 
 ```bash
 #!/usr/bin/env bash
-# Подключить всю библиотеку одной строкой
+# Connect the entire library with one line
 source <(curl -fsSL https://raw.githubusercontent.com/mrvi0/bash-lib/main/bash-lib-standalone.sh)
 
-# Теперь можно использовать все функции
-logging::info "Скрипт запущен"
-colors::success "Операция выполнена успешно!"
+# Now you can use all functions
+logging::info "Script started"
+colors::success "Operation completed successfully!"
 
 if validation::is_email "user@example.com"; then
-    echo "Email валиден"
+    echo "Email is valid"
 fi
 ```
 
-### Универсальный способ (рекомендуется)
+[⬆️ Back to top](#bash-library)
 
-Для более эффективного использования создайте функцию загрузки:
+### Universal Method (Recommended)
+
+For more efficient usage, create a loading function:
 
 ```bash
 #!/usr/bin/env bash
 
-# Универсальная загрузка bash-lib
+# Universal bash-lib loading
 load_bash_lib() {
     local remote_url="https://raw.githubusercontent.com/mrvi0/bash-lib/main/bash-lib-standalone.sh"
     local cache_dir="$HOME/.cache/bash-lib"
     local cache_file="$cache_dir/bash-lib-standalone.sh"
     
-    # Проверить, не загружена ли уже библиотека
+    # Check if library is already loaded
     if [[ -n "$__BASH_LIB_IMPORTED" ]]; then
         return 0
     fi
     
-    # Создать директорию кэша
+    # Create cache directory
     mkdir -p "$cache_dir"
     
-    # Использовать кэш если он не устарел (24 часа)
+    # Use cache if not expired (24 hours)
     if [[ -f "$cache_file" ]] && [[ $(($(date +%s) - $(stat -c %Y "$cache_file"))) -lt 86400 ]]; then
         source "$cache_file"
     else
-        # Скачать и кэшировать
+        # Download and cache
         if curl -fsSL "$remote_url" -o "$cache_file"; then
             source "$cache_file"
         else
-            echo "Ошибка загрузки библиотеки"
+            echo "Error loading library"
             exit 1
         fi
     fi
 }
 
-# Загрузить библиотеку
+# Load library
 load_bash_lib
 
-# Использовать функции
-logging::info "Скрипт запущен"
-colors::success "Готово к работе!"
+# Use functions
+logging::info "Script started"
+colors::success "Ready to work!"
 ```
 
-### Установка
+[⬆️ Back to top](#bash-library)
+
+### Installation
 
 ```bash
-# Клонировать репозиторий
+# Clone repository
 git clone https://github.com/mrvi0/bash-lib.git
 cd bash-lib
 
-# Установить библиотеку
+# Install library
 sudo ./scripts/install.sh
 
-# Активировать в текущей сессии
+# Activate in current session
 source ~/.bashrc
 ```
 
-### Использование
+[⬆️ Back to top](#bash-library)
+
+### Usage
 
 ```bash
 #!/usr/bin/env bash
-# Подключить библиотеку
+# Connect library
 source /usr/local/lib/bash-lib/bash-lib.sh
 
-# Использовать функции
-logging::info "Начинаем работу"
-colors::success "Операция выполнена успешно"
+# Use functions
+logging::info "Starting work"
+colors::success "Operation completed successfully"
 
 if validation::is_email "user@example.com"; then
-    echo "Валидный email"
+    echo "Valid email"
 fi
 ```
 
-## 📁 Структура проекта
+[⬆️ Back to top](#bash-library)
+
+## 🤖 AI Assistant Prompts
+
+When asking AI assistants (like ChatGPT, Claude, etc.) to create bash scripts, you can use these prompts:
+
+### Quick Prompt
+```
+Use my bash library to create a script:
+
+Library: https://github.com/mrvi0/bash-lib
+Connection: source <(curl -fsSL https://raw.githubusercontent.com/mrvi0/bash-lib/main/bash-lib-standalone.sh)
+
+Available functions:
+- colors::success/error/warning/info/debug
+- logging::info/error/debug/warn/fatal  
+- validation::is_email/is_integer/file_exists/is_port
+- confirm "question" - for confirmations
+- print_header "title" - for headers
+- get_system_info - system information
+- check_internet - internet check
+
+Add colored output, logging, validation, and error handling.
+```
+
+### Detailed Prompts
+See `prompts/ai_usage_prompt.md` for comprehensive prompts including:
+- Detailed usage instructions
+- Task-specific prompts
+- Debugging prompts
+- Improvement prompts
+
+[⬆️ Back to top](#bash-library)
+
+## 📦 Versioning
+
+Each stable version of the library is marked with a git tag.
+
+### How to connect a specific version:
+
+```bash
+source <(curl -fsSL https://raw.githubusercontent.com/mrvi0/bash-lib/v1.0.0/bash-lib-standalone.sh)
+```
+
+### How to check current version:
+
+```bash
+bash_lib::version
+```
+
+### How to check version in script:
+
+```bash
+if [[ "$__BASH_LIB_VERSION" != "1.0.0" ]]; then
+    echo "Error: bash-lib version 1.0.0 required"
+    exit 1
+fi
+```
+
+> See all versions on the [Releases](https://github.com/mrvi0/bash-lib/releases) tab or by git tags.
+
+[⬆️ Back to top](#bash-library)
+
+## 📁 Project Structure
 
 ```
 bash-lib/
-├── src/                          # Основной код библиотеки
-│   ├── core/                     # Базовые функции
-│   │   ├── colors.sh            # Цветной вывод
-│   │   ├── logging.sh           # Логирование
-│   │   └── validation.sh        # Валидация данных
-│   ├── io/                      # Работа с файлами и вводом/выводом
-│   ├── system/                  # Системные функции
-│   ├── development/             # Функции для разработки
-│   └── database/                # Работа с базами данных
-├── examples/                     # Примеры использования
-│   ├── basic_usage.sh          # Базовый пример
-│   ├── simple_usage.sh         # Простое подключение
-│   ├── cached_usage.sh         # С кэшированием
-│   ├── local_usage.sh          # Локальный файл
-│   └── universal_usage.sh      # Универсальный способ
-├── tests/                        # Тесты
-├── docs/                         # Документация
-├── scripts/                      # Скрипты установки
-├── bash-lib.sh                  # Главный файл для импорта
-├── bash-lib-standalone.sh       # Единый файл для простого подключения
+├── src/                          # Main library code
+│   ├── core/                     # Basic functions
+│   │   ├── colors.sh            # Colored output
+│   │   ├── logging.sh           # Logging
+│   │   └── validation.sh        # Data validation
+│   ├── io/                      # File and I/O operations
+│   ├── system/                  # System functions
+│   ├── development/             # Development functions
+│   └── database/                # Database operations
+├── examples/                     # Usage examples
+│   ├── basic_usage.sh          # Basic example
+│   ├── simple_usage.sh         # Simple connection
+│   ├── cached_usage.sh         # With caching
+│   ├── local_usage.sh          # Local file
+│   └── universal_usage.sh      # Universal method
+├── tests/                        # Tests
+├── docs/                         # Documentation
+├── scripts/                      # Installation scripts
+├── bash-lib.sh                  # Main import file
+├── bash-lib-standalone.sh       # Single file for simple connection
 └── README.md
 ```
 
-## 🎯 Основные модули
+[⬆️ Back to top](#bash-library)
 
-### Core (Базовые функции)
+## 🎯 Core Modules
+
+### Core (Basic Functions)
 
 #### Colors (`src/core/colors.sh`)
-Цветной вывод в терминал с поддержкой различных цветов и стилей.
+Colored terminal output with support for various colors and styles.
 
 ```bash
-colors::success "Успешная операция"
-colors::error "Ошибка"
-colors::warning "Предупреждение"
-colors::info "Информация"
-colors::debug "Отладочная информация"
-colors::highlight "Выделенный текст"
+colors::success "Successful operation"
+colors::error "Error"
+colors::warning "Warning"
+colors::info "Information"
+colors::debug "Debug information"
+colors::highlight "Highlighted text"
 ```
 
 #### Logging (`src/core/logging.sh`)
-Система логирования с различными уровнями и форматами.
+Logging system with various levels and formats.
 
 ```bash
-# Установить уровень логирования
+# Set logging level
 logging::set_level debug
 
-# Логирование
-logging::info "Информационное сообщение"
-logging::debug "Отладочная информация"
-logging::warn "Предупреждение"
-logging::error "Ошибка"
-logging::fatal "Критическая ошибка (с выходом)"
+# Logging
+logging::info "Information message"
+logging::debug "Debug information"
+logging::warn "Warning"
+logging::error "Error"
+logging::fatal "Critical error (with exit)"
 
-# Логирование в файл
+# Logging to file
 logging::set_file "/var/log/myapp.log"
 ```
 
 #### Validation (`src/core/validation.sh`)
-Валидация различных типов данных.
+Validation of various data types.
 
 ```bash
-# Проверка email
+# Email validation
 validation::is_email "user@example.com"
 
-# Проверка целых чисел
+# Integer validation
 validation::is_integer "123"
 validation::is_positive_integer "456"
 
-# Проверка диапазона
+# Range validation
 validation::is_in_range "50" "1" "100"
 
-# Проверка порта
+# Port validation
 validation::is_port "8080"
 
-# Проверка существования файла
+# File existence check
 validation::file_exists "/path/to/file"
 
-# Комбинированная проверка
+# Combined validation
 validation::all "test@example.com" validation::is_email validation::is_not_empty
 ```
 
-## 📚 Примеры использования
+[⬆️ Back to top](#bash-library)
 
-### Базовый пример
+## 📚 Usage Examples
+
+### Basic Example
 ```bash
 #!/usr/bin/env bash
 source <(curl -fsSL https://raw.githubusercontent.com/mrvi0/bash-lib/main/bash-lib-standalone.sh)
 
-# Настройка логирования
+# Setup logging
 logging::set_level info
 logging::set_file "/tmp/myapp.log"
 
-# Основная логика
-logging::info "Запуск приложения"
+# Main logic
+logging::info "Starting application"
 
-# Валидация входных данных
+# Input validation
 if ! validation::is_email "$1"; then
-    colors::error "Неверный email: $1"
-    logging::error "Валидация email не прошла"
+    colors::error "Invalid email: $1"
+    logging::error "Email validation failed"
     exit 1
 fi
 
-colors::success "Email валиден: $1"
-logging::info "Приложение завершено успешно"
+colors::success "Email is valid: $1"
+logging::info "Application completed successfully"
 ```
 
-### Пример с прогресс-баром
+[⬆️ Back to top](#bash-library)
+
+### Progress Bar Example
 ```bash
 #!/usr/bin/env bash
 source <(curl -fsSL https://raw.githubusercontent.com/mrvi0/bash-lib/main/bash-lib-standalone.sh)
 
-echo "Обработка файлов..."
+echo "Processing files..."
 for i in {1..100}; do
-    colors::progress_bar "$i" "100" "30" "Обработка"
+    colors::progress_bar "$i" "100" "30" "Processing"
     sleep 0.01
 done
-echo "Готово!"
+echo "Done!"
 ```
 
-## 🔧 Способы подключения библиотеки
+[⬆️ Back to top](#bash-library)
 
-### 1. Прямая загрузка (самый простой)
+## 🔧 Installation Methods
+
+### 1. Direct Download (Simplest)
 ```bash
 source <(curl -fsSL https://raw.githubusercontent.com/mrvi0/bash-lib/main/bash-lib-standalone.sh)
 ```
-**Преимущества:** Очень просто, всегда актуальная версия
-**Недостатки:** Требует интернет при каждом запуске, медленнее
+**Pros:** Very simple, always up-to-date version
+**Cons:** Requires internet on each run, slower
 
-### 2. Кэширование (рекомендуется)
+### 2. Caching (Recommended)
 ```bash
 load_bash_lib() {
     local cache_dir="$HOME/.cache/bash-lib"
@@ -243,129 +345,120 @@ load_bash_lib() {
 }
 load_bash_lib
 ```
-**Преимущества:** Быстро, кэширование на 24 часа, работает без интернета
-**Недостатки:** Немного сложнее
+**Pros:** Fast, 24-hour caching, works without internet
+**Cons:** Slightly more complex
 
-### 3. Локальный файл
+### 3. Local File
 ```bash
-# Скачать файл один раз
+# Download file once
 curl -fsSL https://raw.githubusercontent.com/mrvi0/bash-lib/main/bash-lib-standalone.sh -o bash-lib-standalone.sh
 
-# Использовать в скриптах
+# Use in scripts
 source "./bash-lib-standalone.sh"
 ```
-**Преимущества:** Максимальная скорость, работает без интернета
-**Недостатки:** Нужно обновлять вручную
+**Pros:** Maximum speed, works without internet
+**Cons:** Need to update manually
 
-### 4. Универсальный способ
-См. пример `examples/universal_usage.sh` - комбинирует все способы с приоритетом.
+### 4. Universal Method
+See `examples/universal_usage.sh` - combines all methods with priority.
 
-## 🎯 Рекомендации по выбору способа
+[⬆️ Back to top](#bash-library)
 
-| Сценарий | Рекомендуемый способ | Причина |
-|----------|---------------------|---------|
-| **Быстрые скрипты** | Прямая загрузка | Максимальная простота |
-| **Серьезные проекты** | Кэширование | Баланс скорости и актуальности |
-| **Продакшен** | Локальный файл | Надежность и скорость |
-| **Разработка** | Универсальный | Гибкость |
+## 🎯 Recommendations
 
-## 🔧 Установка и настройка
+| Scenario | Recommended Method | Reason |
+|----------|-------------------|---------|
+| **Quick Scripts** | Direct Download | Maximum simplicity |
+| **Serious Projects** | Caching | Balance of speed and relevance |
+| **Production** | Local File | Reliability and speed |
+| **Development** | Universal | Flexibility |
 
-### Автоматическая установка
+[⬆️ Back to top](#bash-library)
+
+## 🔧 Installation and Setup
+
+### Automatic Installation
 ```bash
-# Установка в стандартные директории
+# Install in standard directories
 sudo ./scripts/install.sh
 
-# Установка в пользовательские директории
+# Install in user directories
 ./scripts/install.sh -d ~/.local/lib/bash-lib -b ~/.local/bin
 ```
 
-### Ручная установка
+### Manual Installation
 ```bash
-# Копировать файлы
+# Copy files
 sudo cp -r src /usr/local/lib/bash-lib/
 sudo cp bash-lib.sh /usr/local/lib/bash-lib/
 
-# Добавить в .bashrc
+# Add to .bashrc
 echo 'source /usr/local/lib/bash-lib/bash-lib.sh' >> ~/.bashrc
 source ~/.bashrc
 ```
 
-## 🧪 Тестирование
+[⬆️ Back to top](#bash-library)
+
+## 🧪 Testing
 
 ```bash
-# Запустить примеры
+# Run examples
 ./examples/basic_usage.sh
 ./examples/simple_usage.sh
 ./examples/cached_usage.sh
 ./examples/local_usage.sh
 ./examples/universal_usage.sh
 
-# Проверить доступность функций
+# Check function availability
 bash-lib --help
 ```
 
-## 📖 Документация
+[⬆️ Back to top](#bash-library)
 
-- [API Reference](docs/api_reference.md) - Полная документация API
-- [Getting Started](docs/getting_started.md) - Руководство по началу работы
-- [Best Practices](docs/best_practices.md) - Лучшие практики
+## 📖 Documentation
 
-## 🤝 Вклад в проект
+- [API Reference](docs/api_reference.md) - Complete API documentation
+- [Getting Started](docs/getting_started.md) - Getting started guide
+- [Best Practices](docs/best_practices.md) - Best practices
 
-1. Форкните репозиторий
-2. Создайте ветку для новой функции (`git checkout -b feature/amazing-feature`)
-3. Зафиксируйте изменения (`git commit -m 'Add amazing feature'`)
-4. Отправьте в ветку (`git push origin feature/amazing-feature`)
-5. Откройте Pull Request
+[⬆️ Back to top](#bash-library)
 
-## 📄 Лицензия
+## 🤝 Contributing
 
-Этот проект лицензирован под MIT License - см. файл [LICENSE](LICENSE) для деталей.
+1. Fork the repository
+2. Create a branch for your feature (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## 🆘 Поддержка
+[⬆️ Back to top](#bash-library)
 
-Если у вас есть вопросы или проблемы:
+## 📄 License
 
-1. Проверьте [документацию](docs/)
-2. Посмотрите [примеры](examples/)
-3. Создайте [Issue](https://github.com/mrvi0/bash-lib/issues)
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🔄 Версии
+[⬆️ Back to top](#bash-library)
 
-- **v1.0.0** - Первый стабильный релиз с полным функционалом
-  - Цветной вывод и форматирование
-  - Система логирования с уровнями
-  - Валидация данных (email, числа, файлы, порты)
-  - Системные утилиты (проверка интернета, информация о системе)
-  - Универсальные функции (подтверждения, заголовки, прогресс-бары)
-  - Совместимость со старыми функциями
-- **v1.1.0** - Планируется: IO модули, расширенные системные функции
-- **v1.2.0** - Планируется: Development модули, database модули 
+## 🆘 Support
 
-## 📦 Версионирование
+If you have questions or issues:
 
-Каждая стабильная версия библиотеки помечается git-тегом.
+1. Check the [documentation](docs/)
+2. Look at the [examples](examples/)
+3. Create an [Issue](https://github.com/mrvi0/bash-lib/issues)
 
-### Как подключить конкретную версию:
+[⬆️ Back to top](#bash-library)
 
-```bash
-source <(curl -fsSL https://raw.githubusercontent.com/mrvi0/bash-lib/v1.0.0/bash-lib-standalone.sh)
-```
+## 🔄 Versions
 
-### Как узнать текущую версию:
+- **v1.0.0** - First stable release with full functionality
+  - Colored output and formatting
+  - Logging system with levels
+  - Data validation (email, numbers, files, ports)
+  - System utilities (internet check, system information)
+  - Universal functions (confirmations, headers, progress bars)
+  - Compatibility with old functions
+- **v1.1.0** - Planned: IO modules, extended system functions
+- **v1.2.0** - Planned: Development modules, database modules
 
-```bash
-bash_lib::version
-```
-
-### Как проверить версию в скрипте:
-
-```bash
-if [[ "$__BASH_LIB_VERSION" != "1.0.0" ]]; then
-    echo "Ошибка: требуется bash-lib версии 1.0.0"
-    exit 1
-fi
-```
-
-> Список всех версий смотри на вкладке [Releases](https://github.com/mrvi0/bash-lib/releases) или по git-тегам. 
+[⬆️ Back to top](#bash-library) 
