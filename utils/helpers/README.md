@@ -11,7 +11,7 @@
 
 # Автоматически загружаем утилиты
 if [[ -z "$__BASH_UTILS_IMPORTED" ]]; then
-    source "$(dirname "$0")/../../utils/helpers/colors.sh"
+    source "$(dirname "$0")/../../utils/helpers/base.sh"
 fi
 
 log_info "Скрипт начался"
@@ -25,7 +25,7 @@ log_success "Успешно!"
 
 # Автоматически загружаем утилиты
 if [[ -z "$__BASH_UTILS_IMPORTED" ]]; then
-    source <(curl -fsSL https://raw.githubusercontent.com/mrvi0/bash-lib/main/utils/helpers/colors.sh)
+    source <(curl -fsSL https://raw.githubusercontent.com/mrvi0/bash-lib/main/utils/helpers/base.sh)
 fi
 
 log_info "Скрипт начался"
